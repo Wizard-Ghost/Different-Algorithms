@@ -1,0 +1,36 @@
+class RentalUnit {
+  constructor(address, costPerYear) {
+    this._address = address;
+    this._costPerYear = costPerYear;
+  }
+ 
+  get address() {
+    return this._address;
+  }
+ 
+  get costPerYear() {
+    return this._costPerYear;
+  }
+ 
+  calculateMonthly() {
+    return this.costPerYear / 12; 
+  }
+}
+ 
+class Apartment extends RentalUnit {
+  constructor(address, costPerYear, numberOfBedrooms) {
+    super(address, costPerYear);
+    this._numberOfBedrooms = numberOfBedrooms;
+  }
+ 
+  get numberOfBedrooms() {
+    return this._numberOfBedrooms;
+  }
+ 
+  static randomNumbers() {
+    const examples = ['Manhattan', 'Brooklyn', 'Queens', 'The Bronx', 'Staten Island'];
+    return examples[Math.floor(Math.random() * 5)];
+  }
+}
+ 
+const myApartment = new Apartment('45 W Brooklyn Str', 22000, 2);
