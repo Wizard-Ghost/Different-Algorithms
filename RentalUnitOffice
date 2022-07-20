@@ -34,3 +34,4 @@ class Apartment extends RentalUnit {
 }
  
 const myApartment = new Apartment('45 W Brooklyn Str', 22000, 2);
+console.log(myApartment);
