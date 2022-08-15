@@ -27,8 +27,8 @@ const getGenres = async () => {
 const getMovies = async () => {
   const selectedGenre = getSelectedGenre();
   const discoverMovieEndpoint = '/discover/movie';
-   // 500 is the max allowable page search parameter on tmdb
-  const randomPage = Math.floor(Math.random() * 500); 
+   // 100 pages search random parameter on tmdb
+  const randomPage = Math.floor(Math.random() * 100); 
   const requestParams = (`?api_key=${tmdbKey}&with_genres=${selectedGenre}&page=${randomPage}`);
   const urlToFetch = `${tmdbBaseUrl}${discoverMovieEndpoint}${requestParams}`;
   try{
