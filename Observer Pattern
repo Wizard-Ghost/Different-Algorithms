@@ -1,0 +1,18 @@
+class Account {
+    constructor() {
+        this.followers = [];
+        this.feed = [];
+    }
+    addToFollowers(follower) {
+        this.followers.push(follower);
+    }
+    removeFromFollowers(follower) {
+        this.followers.splice(this.followers.indexOf(follower, 1));
+    }
+    publish(post) {
+        this.followers.forEach(follower => follower.update(post));
+    }
+    update(post) {
+      this.feed.push(post);
+    }
+}
