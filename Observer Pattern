@@ -16,3 +16,24 @@ class Account {
       this.feed.push(post);
     }
 }
+
+ 
+let a = new Account();
+let b = new Account();
+let c = new Account();
+ 
+a.addToFollowers(b);
+a.addToFollowers(c);
+ 
+a.publish("Knock, knock .... Hello, there!");
+ 
+console.log(a);   
+/* Output shows b and c objects listed in a's followers array:
+[
+  Account { followers: [], feed: [ 'Knock, knock .... Hello, there!' ] },
+  Account { followers: [], feed: [ 'Knock, knock .... Hello, there!' ] }
+] 
+*/
+ 
+console.log(b); 
+// Account { followers: [], feed: [ 'Knock, knock .... Hello, there!' ] }
