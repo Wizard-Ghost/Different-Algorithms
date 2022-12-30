@@ -1,0 +1,266 @@
+#include <iostream>
+#include <istream>
+#include <conio.h>
+#include <stdio.h>
+#include <fstream>
+#include <locale>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+#define F(x, y, z) (((x) & (y)) | ((~x) & (z)))
+#define G(x, y, z) (((x) & (z)) | ((y) & (~z)))
+#define H(x, y, z) ((x) ^ (y) ^ (z))
+#define I(x, y, z) ((y) ^ ((x) | (~z)))
+
+#define rotate_left(x, n) (((x) << (n)) | ((x) >> (32-(n))))
+
+class MD
+{
+public:
+
+	char character;
+	int count;
+	char* Stream();
+	void Init();
+	void step1(char* p);
+	int rest;
+	int new_len;
+	unsigned __int64 bit_lengh;
+	unsigned int A, B, C, D; 
+	unsigned int T[64]; 
+	unsigned int AA, BB, CC, DD;
+	int s;
+	string to_hex(unsigned int value);
+};
+
+string MD::to_hex
+{
+	string out;
+	unsigned char hex;
+	char hex_res[3];
+	while (value)
+	{
+		hex = value % 256;
+		_itoa_s(hex, hex_res, 16);
+		if (hex_res[1] == '\0')
+		{
+			hex_res[1] = hex_res[0];
+			hex_res[0] = '0';
+			hex_res[2] = '\0';
+		}
+		out.append(hex_res);
+		value /= 256;
+	}
+	return out;
+}
+
+void MD::Init()
+{
+	character = 0;
+	count = 0;
+	int rest = 0;
+	int new_len = 0;
+	unsigned __int64 bit_lengh = 0;
+	A = 0x67452301, B = 0xefcdab89, C = 0x98badcfe, D = 0x10325476;// початк знач констант
+	int s = 0;
+}
+
+char* MD::Stream()     
+{
+	ifstream in;
+
+	in.open("t.txt");
+
+	if (!in)
+	{
+		cout << "file open error";
+
+	}
+
+	do
+	{
+		character = in.get();
+			count++;
+	} while (in);
+
+	count = count - 1; 
+
+	char *v;
+	v = new char[count]; 
+	in.clear();              
+	in.seekg(0, ios::beg);     
+	for (int i = 0; i < count; i++)
+	{
+		v[i] = in.get();
+	}
+	in.close();
+
+	cout << "vhidne povidomlennya "<<endl;
+	for (int i = 0; i < count; i++)
+	{
+		cout<<v[i] ;
+
+	}
+	
+	cout << endl << endl;
+	return v;
+}
+
+void MD::step1(char* p)
+{
+	//крок 1
+
+	rest = (count) % 64;
+
+	if (rest < 56) 
+		new_len = count - rest + 56 +8;
+	else 
+		new_len = count + 64 - rest + 56 +8;  
+										
+	//крок 2
+
+	unsigned char *g;
+	g = new unsigned char[new_len];
+	
+
+	for (int i = 0; i < count; i++)
+	{
+		g[i] = p[i];
+
+	}
+
+	g[count] = 0x80; 
+	for (int i = count+1; i < new_len-8; i++) 
+		g[i] = 0; 
+
+
+	//крок 3
+
+	bit_lengh = (unsigned __int64)(count* 8);	
+	cout << endl << endl;
+
+	
+
+	for (int i = 0; i < 8; i++) 
+	g[new_len - 8 + i] = (unsigned char)(bit_lengh >> i * 8);  
+	
+	// крок 4
+	
+	unsigned int T[64]; 
+	for (int i = 0; i<64; i++) 
+		T[i] = unsigned int(pow(2, 32)*fabs(sin(i + 1))); 
+
+	unsigned int *X = (unsigned int*)(g); 
+
+	
+	for (int i = 0; i<new_len / 4; i += 16)
+	{
+		AA = A; BB = B; CC = C; DD = D;
+
+		//раунд 1
+		A = B + rotate_left((A + F(B, C, D) + X[i + 0] + T[0]), 7);
+		D = A + rotate_left((D + F(A, B, C) + X[i + 1] + T[1]), 12);
+		C = D + rotate_left((C + F(D, A, B) + X[i + 2] + T[2]), 17);
+		B = C + rotate_left((B + F(C, D, A) + X[i + 3] + T[3]), 22);
+
+		A = B + rotate_left((A + F(B, C, D) + X[i + 4] + T[4]), 7);
+		D = A + rotate_left((D + F(A, B, C) + X[i + 5] + T[5]), 12);
+		C = D + rotate_left((C + F(D, A, B) + X[i + 6] + T[6]), 17);
+		B = C + rotate_left((B + F(C, D, A) + X[i + 7] + T[7]), 22);
+
+		A = B + rotate_left((A + F(B, C, D) + X[i + 8] + T[8]), 7);
+		D = A + rotate_left((D + F(A, B, C) + X[i + 9] + T[9]), 12);
+		C = D + rotate_left((C + F(D, A, B) + X[i + 10] + T[10]), 17);
+		B = C + rotate_left((B + F(C, D, A) + X[i + 11] + T[11]), 22);
+
+		A = B + rotate_left((A + F(B, C, D) + X[i + 12] + T[12]), 7);
+		D = A + rotate_left((D + F(A, B, C) + X[i + 13] + T[13]), 12);
+		C = D + rotate_left((C + F(D, A, B) + X[i + 14] + T[14]), 17);
+		B = C + rotate_left((B + F(C, D, A) + X[i + 15] + T[15]), 22);
+
+		//раунд 2
+		A = B + rotate_left((A + G(B, C, D) + X[i + 1] + T[16]), 5);
+		D = A + rotate_left((D + G(A, B, C) + X[i + 6] + T[17]), 9);
+		C = D + rotate_left((C + G(D, A, B) + X[i + 11] + T[18]), 14);
+		B = C + rotate_left((B + G(C, D, A) + X[i + 0] + T[19]), 20);
+
+		A = B + rotate_left((A + G(B, C, D) + X[i + 5] + T[20]), 5);
+		D = A + rotate_left((D + G(A, B, C) + X[i + 10] + T[21]), 9);
+		C = D + rotate_left((C + G(D, A, B) + X[i + 15] + T[22]), 14);
+		B = C + rotate_left((B + G(C, D, A) + X[i + 4] + T[23]), 20);
+
+		A = B + rotate_left((A + G(B, C, D) + X[i + 9] + T[24]), 5);
+		D = A + rotate_left((D + G(A, B, C) + X[i + 14] + T[25]), 9);
+		C = D + rotate_left((C + G(D, A, B) + X[i + 3] + T[26]), 14);
+		B = C + rotate_left((B + G(C, D, A) + X[i + 8] + T[27]), 20);
+
+		A = B + rotate_left((A + G(B, C, D) + X[i + 13] + T[28]), 5);
+		D = A + rotate_left((D + G(A, B, C) + X[i + 2] + T[29]), 9);
+		C = D + rotate_left((C + G(D, A, B) + X[i + 7] + T[30]), 14);
+		B = C + rotate_left((B + G(C, D, A) + X[i + 12] + T[31]), 20);
+
+		//раунд 3
+		A = B + rotate_left((A + H(B, C, D) + X[i + 5] + T[32]), 4);
+		D = A + rotate_left((D + H(A, B, C) + X[i + 8] + T[33]), 11);
+		C = D + rotate_left((C + H(D, A, B) + X[i + 11] + T[34]), 16);
+		B = C + rotate_left((B + H(C, D, A) + X[i + 14] + T[35]), 23);
+
+		A = B + rotate_left((A + H(B, C, D) + X[i + 1] + T[36]), 4);
+		D = A + rotate_left((D + H(A, B, C) + X[i + 4] + T[37]), 11);
+		C = D + rotate_left((C + H(D, A, B) + X[i + 7] + T[38]), 16);
+		B = C + rotate_left((B + H(C, D, A) + X[i + 10] + T[39]), 23);
+
+		A = B + rotate_left((A + H(B, C, D) + X[i + 13] + T[40]), 4);
+		D = A + rotate_left((D + H(A, B, C) + X[i + 0] + T[41]), 11);
+		C = D + rotate_left((C + H(D, A, B) + X[i + 3] + T[42]), 16);
+		B = C + rotate_left((B + H(C, D, A) + X[i + 6] + T[43]), 23);
+
+		A = B + rotate_left((A + H(B, C, D) + X[i + 9] + T[44]), 4);
+		D = A + rotate_left((D + H(A, B, C) + X[i + 12] + T[45]), 11);
+		C = D + rotate_left((C + H(D, A, B) + X[i + 15] + T[46]), 16);
+		B = C + rotate_left((B + H(C, D, A) + X[i + 2] + T[47]), 23);
+
+		//раунд 4
+		A = B + rotate_left((A + I(B, C, D) + X[i + 0] + T[48]), 6);
+		D = A + rotate_left((D + I(A, B, C) + X[i + 7] + T[49]), 10);
+		C = D + rotate_left((C + I(D, A, B) + X[i + 14] + T[50]), 15);
+		B = C + rotate_left((B + I(C, D, A) + X[i + 5] + T[51]), 21);
+
+		A = B + rotate_left((A + I(B, C, D) + X[i + 12] + T[52]), 6);
+		D = A + rotate_left((D + I(A, B, C) + X[i + 3] + T[53]), 10);
+		C = D + rotate_left((C + I(D, A, B) + X[i + 10] + T[54]), 15);
+		B = C + rotate_left((B + I(C, D, A) + X[i + 1] + T[55]), 21);
+
+		A = B + rotate_left((A + I(B, C, D) + X[i + 8] + T[56]), 6);
+		D = A + rotate_left((D + I(A, B, C) + X[i + 15] + T[57]), 10);
+		C = D + rotate_left((C + I(D, A, B) + X[i + 6] + T[58]), 15);
+		B = C + rotate_left((B + I(C, D, A) + X[i + 13] + T[59]), 21);
+
+		A = B + rotate_left((A + I(B, C, D) + X[i + 4] + T[60]), 6);
+		D = A + rotate_left((D + I(A, B, C) + X[i + 11] + T[61]), 10);
+		C = D + rotate_left((C + I(D, A, B) + X[i + 2] + T[62]), 15);
+		B = C + rotate_left((B + I(C, D, A) + X[i + 9] + T[63]), 21);
+
+		A = A + AA;
+		B = B + BB;
+		C = C + CC;
+		D = D + DD;
+	}
+
+
+	cout <<endl<<"hash:"<<endl;
+	string res = to_hex(A) + to_hex(B) + to_hex(C) + to_hex(D);
+	cout << res;
+}
+
+void main ()
+{
+	
+	MD h;
+	h.Init();
+	h.step1(h.Stream());
+	_getch();
+	
+}
