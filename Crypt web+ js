@@ -1,0 +1,144 @@
+// index.html
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="style.css" title="" type="text/css" />
+        <title>De-Code</title>
+        
+    </head>
+    <body>
+        <h3 class="headline">Only for English alphabet</h3>
+        <div class="">
+            <textarea class="inp-dis" name="" id="input" rows="10" cols="40" placeholder="Enter your text here.If your text isn't encoded from here decode will not work."></textarea>
+            <button type="submit" class="btn" onclick="encode()">Encode</button>
+            <button type="submit" class="btn" onclick="decode()">Decode</button>
+            <textarea class="inp-dis" name="" id="display" rows="10" cols="40" disabled=""></textarea>
+            
+        </div>
+     
+        
+        
+        <button type="submit" id="reset" class="btn" onclick="reset()">Reset</button>
+        
+        
+        
+        
+        
+        
+        <script src="main.js" type="text/javascript" charset="utf-8">
+            
+        </script>
+    </body>
+</html>
+
+
+// style.css
+
+body{
+    text-align: center;
+    font-size: 20px;
+    font-family: Monospace;
+}
+.headline{
+    font-size: 22px;
+}
+.inp-dis{
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+}
+.btn{
+    color: #2596be;
+    border: 2px solid #03eeff;
+    background: white;
+    border-radius: 4px;
+    font-size: 18px;
+    box-shadow: 0 0 10px #504d4dca;
+    margin: 15px 5px 18px;
+    padding: 5px 12px;
+    font-weight: bold;
+    outline: none;
+    
+    
+}
+.btn:hover{
+    box-shadow: 0 0 10px #737373ca inset;
+    transition: 0.3s;
+}
+#reset:hover{
+    background: #2596be;
+    color: white;
+    transition: 0.3s;
+}
+
+// main.js
+
+var letters_code =
+ "abcdefghijklmnopqrstuvwxyzabcdefghi";
+var letters_decode =
+ "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopq";
+var ans = "";
+
+function reverseString(str) {
+ var newString = "";
+ for (var i = str.length - 1; i >=
+  0; i--) {
+  newString += str[i];
+ }
+ return newString;
+}
+
+
+
+function encode() {
+ text = document.getElementById("input")
+  .value;
+ text = text.toLowerCase();
+ var i = null;
+ for (i of text) {
+
+  x = letters_code.indexOf(i) + 9;
+  if (letters_code.indexOf(i) < 0) {
+   ans += i;
+  } else {
+   ans += letters_code[x];
+  }
+
+ }
+ ans = reverseString(ans);
+ document.getElementById('display')
+  .innerHTML = ans;
+ ans = "";
+}
+
+function decode() {
+ text = document.getElementById('input')
+  .value;
+ text = text.toLowerCase();
+ var i = null;
+ for (i of text) {
+
+  x = letters_decode.indexOf(i) + 17;
+  console.log(letters_decode.indexOf(i))
+  if (letters_decode.indexOf(i) < 0) {
+   ans += i;
+  } else {
+   ans += letters_decode[x];
+  }
+ }
+ ans = reverseString(ans);
+ document.getElementById('display')
+  .innerHTML = ans;
+ ans = "";
+
+}
+
+function reset() {
+ document.getElementById('display')
+  .innerHTML = "";
+ document.getElementById('input')
+  .value = "";
+ ans = "";
+}
