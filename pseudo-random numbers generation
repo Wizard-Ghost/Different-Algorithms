@@ -1,0 +1,78 @@
+#include <iostream>
+#include <istream>
+#include <conio.h>
+#include <stdio.h>
+#include <fstream>
+#include <locale>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+
+void main()
+{
+	unsigned long   X0, a, c, m;
+
+	X0 = 5;
+	a = 729;
+
+
+
+
+
+
+
+	m = 4194303;
+	c = 233;
+	
+	unsigned long x = X0;
+
+	int vvod;
+	vvod = 0;
+
+	loop1:
+	cout << "enter k-t cyfr v poslidovnosti" << endl;
+	cin >> vvod;
+
+	if (vvod > 2000) 
+	{
+		cout << "v poslidovnosti tilky 2000 cyfry"<<endl;
+		goto loop1;
+	}
+
+	vector< unsigned long > X; 
+	do {
+		x = (x * a + c) % m;
+		X.push_back(x);
+	} while (x != X0 );
+
+	unsigned int vector_size = X.size(); 
+
+	cout << "pershi " << vvod << "elementiv poslidovnosti:" << endl;
+	for (int i = 0; i < vvod; i++)
+	{
+		std::cout << X[i] << std::endl;
+	}
+
+	cout << "-----------------------------" << endl;
+	cout << "period poslidovnosti  - " << vector_size;
+
+	ofstream stream("test.txt");
+
+	cout << "\n";
+
+
+	if (!stream)
+	{
+		cout << "file  error";
+	}
+
+	for (int i = 0; i < vvod; i++) 
+	{
+		stream << X[i] << endl;
+	}
+	stream.close();
+
+	_getch();
+}
+
